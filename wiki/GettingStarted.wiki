@@ -1,0 +1,90 @@
+#summary Introduction to the Ruby Client Library
+
+= Getting started with the Ruby Client Library =
+
+== Installation ==
+
+The following gems and their dependencies are required by this client library:
+
+  * oauth
+  * json
+  * rails (optional, for incoming signed makeRequest validation)
+  * mocha (optional, for running tests)
+
+Once you have the required gems installed, check out the project code from SVN,
+and copy opensocial.rb and opensocial/ into your application's path. Then add:
+
+{{{
+require 'opensocial'
+}}}
+
+in your code.
+
+== List of restful endpoints you can use to test the library ==
+  * http://sandbox.orkut.com/social/rest
+  * http://api.myspace.com/v2
+
+== List of RPC endpoints you can use to test the library ==
+  * http://sandbox.orkut.com/social/rpc
+
+== Sample code ==
+
+To make the most of this example, install [http://opensocial-resources.googlecode.com/svn/samples/rest_rpc/sample.xml this gadget] on your sandbox.orkut.com profile, and use the ID it presents to you in place of the example 'requestor' below.
+
+Enter the following in an IRB session, initiated from the root of your app (which contains the files as outlined above):
+
+{{{
+require 'opensocial'
+
+# Loads credentials for the example gadget above.
+consumer_key = 'orkut.com:623061448914'
+consumer_secret = 'uynAeXiWTisflWX99KU1D2q5'
+requestor = '03067092798963641994'
+
+# Initializes a new connection orkut.
+c = OpenSocial::Connection.new(:consumer_key => consumer_key, :consumer_secret => consumer_secret, :xoauth_requestor_id => requestor)
+
+# Creates a request for profile data for 'requestor'.
+r = OpenSocial::FetchPersonRequest.new(c)
+
+# Loads the data, and displays it on the console, using REST with HMAC-SHA1 signing.
+puts r.send.inspect
+
+# Creates an RPC request for information on 'requestor's friends.
+r = OpenSocial::RpcRequest.new(c)
+r.add(:friends => OpenSocial::FetchPeopleRequest.new)
+
+# Loads the data, and displays it on the console using RPC with HMAC-SHA1 signing.
+puts r.send.inspect
+
+# Creates an RPC request for 'requestor's appdata.
+r = OpenSocial::RpcRequest.new(c)
+r.add(:data => OpenSocial::FetchAppDataRequest.new)
+
+# Loads the data, and displays it on the console using RPC with HMAC-SHA1 signing.
+puts r.send.inspect
+}}}
+
+----
+
+== !MySpace sample ==
+
+The following uses the same gadget XML as above, on MySpace, with its REST endpoint.
+
+{{{
+require 'opensocial'
+
+# Loads MySpace credentials for the example gadget.
+consumer_key = 'http://opensocial-resources.googlecode.com/svn/samples/rest_rpc/sample.xml'
+consumer_secret = '6a838d107daf4d09b7d446422f5e7a81'
+requestor = '425505213'
+
+# Initializes a new connection MySpace.
+c = OpenSocial::Connection.new(:container => OpenSocial::Connection::MYSPACE, :consumer_key => consumer_key, :consumer_secret => consumer_secret, :xoauth_requestor_id => requestor)
+
+# Creates a request for profile data for 'requestor'.
+r = OpenSocial::FetchPersonRequest.new(c, requestor)
+
+# Loads the data, and displays it on the console, using REST with HMAC-SHA1 signing.
+puts r.send.inspect
+}}}
