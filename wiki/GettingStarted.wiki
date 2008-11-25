@@ -1,4 +1,5 @@
 #summary Introduction to the Ruby Client Library
+#labels Featured
 
 = Getting started with the Ruby Client Library =
 
