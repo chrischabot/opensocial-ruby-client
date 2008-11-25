@@ -1,4 +1,5 @@
 #summary How to become a contributor and submit patches
+#labels Featured
 =How to become a contributor and submit patches=
 
 ==Contributor License Agreements==
