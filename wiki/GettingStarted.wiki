@@ -1,5 +1,5 @@
-#summary Introduction to the Ruby Client Library
 #labels Featured
+ #summary Introduction to the Ruby Client Library
 
 = Getting started with the Ruby Client Library =
 
@@ -11,6 +11,25 @@ The following gems and their dependencies are required by this client library:
   * json
   * rails (optional, for incoming signed makeRequest validation)
   * mocha (optional, for running tests)
+
+=== From gem ===
+
+Download the newest version of the gem on the [http://code.google.com/p/opensocial-ruby-client/downloads/list downloads] page. In a console, navigate to your downloads directory and enter:
+
+{{{
+gem install opensocial-x.x.x.gem
+}}}
+
+replacing x.x.x with the version number.
+
+Now, in your code, you can include the code with:
+
+{{{
+require 'rubygems'
+require 'opensocial'
+}}}
+
+=== From source ===
 
 Once you have the required gems installed, check out the project code from SVN,
 and copy opensocial.rb and opensocial/ into your application's path. Then add:
