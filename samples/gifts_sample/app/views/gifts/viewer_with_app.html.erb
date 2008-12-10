@@ -1,0 +1,33 @@
+Recent gifts:
+<% if @gifts.length > 0 -%>
+<ul id="recent">
+<% @gifts.each_with_index do |gift, i| -%>
+  <li class='<%= i % 2 == 0 ? 'even' : 'odd' %>'>
+    <div class='gift'>
+      <% if gift.sent_by == @id -%>
+      <img src='<%= @viewer.thumbnail_url %>' />
+      You sent <%= @owner.long_name %> a <%= gift.gift_name.name %> @ <%= gift.created_at.strftime("%c") %>
+      <% else -%>
+      <img src='<%= @owner.thumbnail_url %>' />
+      <%= gift_viewed?(gift) %>
+      <%= @owner.long_name %> sent you a <%= gift.gift_name.name %> @ <%= gift.created_at.strftime("%c") %>
+      <% end -%>
+      <% if !gift.note.empty? -%>
+      <div class='note'>
+        <p class='note'><%= gift.note %></p>
+      </div>
+      <% end -%>
+    </div>
+  </li>
+<% end -%>
+</ul>
+<% else -%>
+<p>You haven't exchanged any gifts with <%= @owner.long_name %>.</p>
+<% end -%>
+
+<% form_for :gift, :url => { :action => :give } do |f| %>
+  Send <%= @owner.long_name %> a
+  <%= select("gift", "gift_name_id", @gift_names.collect {|g| [ g.name, g.id ] }) %>
+  <p><%= f.label :note %>: <%= f.text_field :note %></p>
+  <%= submit_tag 'Send' %>
+<% end %>

@@ -1,0 +1,51 @@
+# Logfile created on Wed Dec 10 14:27:02 -0800 2008  [4;36;1mSession Load (0.011841)[0m   [0;1mSELECT * FROM "sessions" [0m
+  [4;35;1mSession Destroy (0.001374)[0m   [0m DELETE FROM "sessions"
+ WHERE "id" = 419
+[0m
+  [4;36;1mSession Destroy (0.000586)[0m   [0;1m DELETE FROM "sessions"
+ WHERE "id" = 421
+[0m
+  [4;35;1mSession Destroy (0.000596)[0m   [0m DELETE FROM "sessions"
+ WHERE "id" = 424
+[0m
+  [4;36;1mGift Load (0.003186)[0m   [0;1mSELECT * FROM "gifts" [0m
+  [4;35;1mGift Load (0.002201)[0m   [0mSELECT * FROM "gifts" [0m
+  [4;36;1mGift Destroy (0.000430)[0m   [0;1m DELETE FROM "gifts"
+ WHERE "id" = 27
+[0m
+  [4;35;1mGift Destroy (0.000496)[0m   [0m DELETE FROM "gifts"
+ WHERE "id" = 28
+[0m
+  [4;36;1mGift Destroy (0.000378)[0m   [0;1m DELETE FROM "gifts"
+ WHERE "id" = 29
+[0m
+  [4;35;1mGift Destroy (0.000488)[0m   [0m DELETE FROM "gifts"
+ WHERE "id" = 30
+[0m
+  [4;36;1mGift Destroy (0.000491)[0m   [0;1m DELETE FROM "gifts"
+ WHERE "id" = 31
+[0m
+  [4;35;1mGift Destroy (0.000580)[0m   [0m DELETE FROM "gifts"
+ WHERE "id" = 32
+[0m
+  [4;36;1mGift Destroy (0.000645)[0m   [0;1m DELETE FROM "gifts"
+ WHERE "id" = 33
+[0m
+  [4;35;1mGift Destroy (0.000380)[0m   [0m DELETE FROM "gifts"
+ WHERE "id" = 34
+[0m
+  [4;36;1mGift Destroy (0.000553)[0m   [0;1m DELETE FROM "gifts"
+ WHERE "id" = 35
+[0m
+  [4;35;1mGift Destroy (0.000488)[0m   [0m DELETE FROM "gifts"
+ WHERE "id" = 36
+[0m
+  [4;36;1mGift Destroy (0.000375)[0m   [0;1m DELETE FROM "gifts"
+ WHERE "id" = 37
+[0m
+  [4;35;1mGift Destroy (0.000244)[0m   [0m DELETE FROM "gifts"
+ WHERE "id" = 38
+[0m
+  [4;36;1mGiftName Load (0.000821)[0m   [0;1mSELECT * FROM "gift_names" [0m
+  [4;35;1mGift Load (0.000290)[0m   [0mSELECT * FROM "gifts" [0m
+  [4;36;1mSession Load (0.000283)[0m   [0;1mSELECT * FROM "sessions" [0m

@@ -1,0 +1,18 @@
+Recent gifts:
+<% if @gifts.length > 0 -%>
+<ul id="recent">
+<% @gifts.each do |gift| -%>
+  <li>
+    <div class='gift'>
+    <% if gift.sent_by == @id -%>
+    <%= @people[session[:id]].long_name %> sent <%= @people[gift.received_by].long_name %> a <%= gift.gift_name.name %> @ <%= gift.created_at.strftime("%c") %>
+    <% else -%>
+    <%= @people[gift.sent_by].long_name %> sent <%= @people[session[:id]].long_name %> a <%= gift.gift_name.name %> @ <%= gift.created_at.strftime("%c") %>
+    <% end -%>
+    </div>
+  </li>
+<% end -%>
+</ul>
+<% else -%>
+<p><%= @people[session[:id]].long_name %> hasn't exchanged any gifts.</p>
+<% end -%>

@@ -1,0 +1,60 @@
+/* Tag redeclarations */
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+form {
+  clear: both;
+  margin: 10px 0px 0px;
+}
+img {
+  float: left;
+  padding: 5px 5px 0px;
+}
+ul {
+  list-style: none;
+  padding: 0px;
+  margin: 10px 0px;
+}
+li {
+  height: 90px;
+}
+p {
+  padding: 5px 0px 0px;
+  margin: 0px;
+}
+
+/* The main content section */
+div#content {
+  margin: 0px 5px;
+  padding: 0px;
+}
+
+/* List styling */
+li.odd {
+  background-color: #F9F9F9;
+}
+li.even {
+  background-color: #E7E7E7;
+}
+
+/* Gift styling */
+div.gift {
+  padding: 5px 0px 0px;
+}
+span.new {
+  color: #F00;
+  font-weight: bold;
+  border-bottom: 1px solid #F00;
+}
+div.note {
+  margin: 5px 0px 0px;
+}
+p.note {
+  padding: 2px 5px 0px;
+  display: inline;
+  background-color: #FEFFEB;
+  border: 1px dotted #82E27B;
+}
