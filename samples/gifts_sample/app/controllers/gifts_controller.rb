@@ -20,7 +20,7 @@ class GiftsController < ApplicationController
   
   # Declares where your application lives. Points to the page where users are
   # redirected after loading the iframe.
-  SERVER = 'http://example.com/iframe'
+  SERVER = 'http://example.com/'
   
   # Controls the auto-validation of the signed makeRequest.
   before_filter :check_signature, :only => [:iframe]
