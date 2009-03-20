@@ -25,10 +25,16 @@ module OpenSocial #:nodoc:
   class Connection
     ORKUT = { :endpoint => 'http://sandbox.orkut.com/social',
               :rest => 'rest/',
-              :rpc => 'rpc/' }
-    IGOOGLE = { :endpoint => 'http://sandbox.gmodules.com/api',
+              :rpc => 'rpc/',
+              :content_type => 'application/json',
+              :post_body_signing => true,
+              :use_request_body_hash => false }
+    IGOOGLE = { :endpoint => 'http://www-opensocial-sandbox.googleusercontent.com/api',
                 :rest => '',
-                :rpc => 'rpc' }
+                :rpc => 'rpc',
+                :content_type => 'application/json',
+                :post_body_signing => false,
+                :use_request_body_hash => false }
     MYSPACE = { :endpoint => 'http://api.myspace.com/v2',
                 :rest => '',
                 :rpc => '',
@@ -36,7 +42,10 @@ module OpenSocial #:nodoc:
                 :request_token_path => '/request_token',
                 :authorize_path => '/authorize',
                 :access_token_path => '/access_token',
-                :http_method => :get }
+                :http_method => :get,
+                :content_type => 'application/x-www-form-urlencoded',
+                :post_body_signing => true,
+                :use_request_body_hash => false }
     
     AUTH_HMAC = 0
     AUTH_ST = 1
@@ -70,6 +79,16 @@ module OpenSocial #:nodoc:
     
     # Defines the authentication scheme: HMAC or security token.
     attr_accessor :auth
+    
+    # Defines the content-type when sending a request body
+    attr_accessor :content_type
+    
+    # Defines whether or not to sign the request body (treating the body as a
+    # large query parameter for the purposes of the signature base string)
+    attr_accessor :post_body_signing
+    
+    # Defines whether or not to sign the body using a request body hash
+    attr_accessor :use_request_body_hash
     
     # Initializes the Connection using the supplied options hash, or the
     # defaults. Verifies that the supplied authentication type has proper
