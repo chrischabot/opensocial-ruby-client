@@ -43,6 +43,15 @@ and authentication, including the following features:
    r = OpenSocial::FetchPersonRequest.new(c)
    person = r.send
    
+* Support for body signing via the {request body hash}[http://oauth.googlecode.com/svn-history/r823/spec/ext/body_hash/1.0/drafts/1/spec.html]:
+
+   ORKUT = { :endpoint => 'http://sandbox.orkut.com/social',
+             :rest => 'rest/',
+             :rpc => 'rpc/',
+             :content_type => 'application/json',
+             :post_body_signing => false,
+             :use_request_body_hash => true }
+   
 * Incoming signed makeRequest verification helper:
 
    class ExampleController < ApplicationController
@@ -75,7 +84,7 @@ in your code.
 
 To generate docs:
 
-  rdoc * --main README
+  rdoc * --force --main README
   
 from the (tag/branch/trunk) root of the project directory.
 

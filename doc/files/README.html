@@ -56,7 +56,7 @@
     </tr>
     <tr class="top-aligned-row">
       <td><strong>Last Update:</strong></td>
-      <td>Wed Dec 10 14:21:17 -0800 2008</td>
+      <td>Fri Mar 20 15:28:46 -0700 2009</td>
     </tr>
     </table>
   </div>
@@ -122,6 +122,19 @@ outgoing requests:
  person = r.send
 </pre>
 </li>
+<li>Support for body signing via the <a
+href="http://oauth.googlecode.com/svn-history/r823/spec/ext/body_hash/1.0/drafts/1/spec.html">request
+body hash</a>:
+
+<pre>
+ ORKUT = { :endpoint =&gt; 'http://sandbox.orkut.com/social',
+           :rest =&gt; 'rest/',
+           :rpc =&gt; 'rpc/',
+           :content_type =&gt; 'application/json',
+           :post_body_signing =&gt; false,
+           :use_request_body_hash =&gt; true }
+</pre>
+</li>
 <li>Incoming signed makeRequest verification helper:
 
 <pre>
@@ -173,7 +186,7 @@ in your code.
 To generate docs:
 </p>
 <pre>
-  rdoc * --main README
+  rdoc * --force --main README
 </pre>
 <p>
 from the (tag/branch/trunk) root of the project directory.
