@@ -84,8 +84,22 @@ module OpenSocial #:nodoc:
       http = Net::HTTP.new(uri.host, uri.port)
       
       if post_data
+        if @connection.container[:use_request_body_hash]
+          hash = request_body_hash(post_data)
+          
+          # Appends the hash parameter
+          query = uri.query
+          if query
+            uri.query = query + '&oauth_body_hash=' + hash
+          else
+            uri.query = 'oauth_body_hash=' + hash
+          end
+        end
+        
         req = Net::HTTP::Post.new(uri.request_uri)
-        req.set_form_data(post_data)
+        if @connection.container[:post_body_signing]
+          req.set_form_data(post_data)
+        end
       else
         req = Net::HTTP::Get.new(uri.request_uri)
       end
@@ -93,7 +107,8 @@ module OpenSocial #:nodoc:
       @connection.sign!(http, req)
       
       if post_data
-        resp = http.post(req.path, post_data)
+        resp = http.post(req.path, post_data, {'Content-type' =>
+          @connection.container[:content_type]})
         check_for_json_error!(resp)
       else
         resp = http.get(req.path)
@@ -101,6 +116,12 @@ module OpenSocial #:nodoc:
       end
       
       return resp.body
+    end
+    
+    # Generates a request body hash as outlined by the OAuth spec:
+    # http://oauth.googlecode.com/svn/spec/ext/body_hash/1.0/drafts/1/spec.html
+    def request_body_hash(post_data)
+      CGI.escape(Base64.encode64(Digest::SHA1.digest(post_data)).rstrip)
     end
     
     # Checks the response object's status code. If the response is is
