@@ -115,17 +115,17 @@ declare an authorization mechanism and appropriate credentials.
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">ORKUT</td>
           <td>=</td>
-          <td class="context-item-value">{ :endpoint =&gt; 'http://sandbox.orkut.com/social',               :rest =&gt; 'rest/',               :rpc =&gt; 'rpc/' }</td>
+          <td class="context-item-value">{ :endpoint =&gt; 'http://sandbox.orkut.com/social',               :rest =&gt; 'rest/',               :rpc =&gt; 'rpc/',               :content_type =&gt; 'application/json',               :post_body_signing =&gt; true,               :use_request_body_hash =&gt; false }</td>
         </tr>
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">IGOOGLE</td>
           <td>=</td>
-          <td class="context-item-value">{ :endpoint =&gt; 'http://sandbox.gmodules.com/api',                 :rest =&gt; '',                 :rpc =&gt; 'rpc' }</td>
+          <td class="context-item-value">{ :endpoint =&gt; 'http://www-opensocial-sandbox.googleusercontent.com/api',                 :rest =&gt; '',                 :rpc =&gt; 'rpc',                 :content_type =&gt; 'application/json',                 :post_body_signing =&gt; false,                 :use_request_body_hash =&gt; false }</td>
         </tr>
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">MYSPACE</td>
           <td>=</td>
-          <td class="context-item-value">{ :endpoint =&gt; 'http://api.myspace.com/v2',                 :rest =&gt; '',                 :rpc =&gt; '',                 :base_uri =&gt; 'http://api.myspace.com',                 :request_token_path =&gt; '/request_token',                 :authorize_path =&gt; '/authorize',                 :access_token_path =&gt; '/access_token',                 :http_method =&gt; :get }</td>
+          <td class="context-item-value">{ :endpoint =&gt; 'http://api.myspace.com/v2',                 :rest =&gt; '',                 :rpc =&gt; '',                 :base_uri =&gt; 'http://api.myspace.com',                 :request_token_path =&gt; '/request_token',                 :authorize_path =&gt; '/authorize',                 :access_token_path =&gt; '/access_token',                 :http_method =&gt; :get,                 :content_type =&gt; 'application/x-www-form-urlencoded',                 :post_body_signing =&gt; true,                 :use_request_body_hash =&gt; false }</td>
         </tr>
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">AUTH_HMAC</td>
@@ -194,11 +194,36 @@ Defines the container that will be used in requests.
 </td>
         </tr>
         <tr class="top-aligned-row context-row">
+          <td class="context-item-name">content_type</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Defines the content-type when sending a request body
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">post_body_signing</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Defines whether or not to sign the request body (treating the body as a
+large query parameter for the purposes of the signature base string)
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
           <td class="context-item-name">st</td>
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
           <td class="context-item-desc">
 Defines the security token, for when <a href="../OAuth.html">OAuth</a> is
 not in use.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">use_request_body_hash</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Defines whether or not to sign the body using a request body hash
 
 </td>
         </tr>
