@@ -27,14 +27,14 @@ module OpenSocial #:nodoc:
               :rest => 'rest/',
               :rpc => 'rpc/',
               :content_type => 'application/json',
-              :post_body_signing => true,
-              :use_request_body_hash => false }
+              :post_body_signing => false,
+              :use_request_body_hash => true }
     IGOOGLE = { :endpoint => 'http://www-opensocial-sandbox.googleusercontent.com/api',
                 :rest => '',
                 :rpc => 'rpc',
                 :content_type => 'application/json',
                 :post_body_signing => false,
-                :use_request_body_hash => false }
+                :use_request_body_hash => true }
     MYSPACE = { :endpoint => 'http://api.myspace.com/v2',
                 :rest => '',
                 :rpc => '',
