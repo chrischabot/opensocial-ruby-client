@@ -18,7 +18,7 @@ require 'rake/gempackagetask'
 
 spec = Gem::Specification.new do |s| 
   s.name = 'opensocial'
-  s.version = '0.0.3'
+  s.version = '0.0.4'
   s.author = 'Dan Holevoet'
   s.email = 'api.dwh@google.com'
   s.homepage = 'http://code.google.com/p/opensocial-ruby-client/'
@@ -33,7 +33,7 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files = ['README', 'LICENSE', 'NOTICE']
   s.rdoc_options << '--main' << 'README'
   s.add_dependency('json', '>= 1.1.3')
-  s.add_dependency('oauth', '>= 0.2.7')
+  s.add_dependency('oauth', '>= 0.3.2')
   s.add_dependency('mocha', '>= 0.9.2')
   s.add_dependency('rails', '>= 2.1.0')
 end

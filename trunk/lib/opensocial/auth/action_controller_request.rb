@@ -24,8 +24,7 @@
 
 require 'rubygems'
 require 'active_support'
-require 'action_controller/request'
-require 'oauth/request_proxy/base'
+require 'oauth/request_proxy/action_controller_request'
 require 'uri'
 
 module OAuth::RequestProxy #:nodoc: all

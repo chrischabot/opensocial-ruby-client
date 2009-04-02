@@ -53,17 +53,4 @@ class OnlineTest < Test::Unit::TestCase #:nodoc:
       person = r.send
     end
   end
-  
-  # Test an unauthorized RPC request
-  def test_unauthorized_rpc_request
-    consumer_key = 'foo'
-    consumer_secret = 'bar'
-    requestor = 'baz'
-    c = OpenSocial::Connection.new(:consumer_key => consumer_key, :consumer_secret => consumer_secret, :xoauth_requestor_id => requestor)
-    r = OpenSocial::RpcRequest.new(c)
-    r.add(:data => OpenSocial::FetchAppDataRequest.new)
-    assert_raise OpenSocial::AuthException do
-      data = r.send[:data]
-    end
-  end
 end
