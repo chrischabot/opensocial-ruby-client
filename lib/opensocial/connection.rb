@@ -131,7 +131,7 @@ module OpenSocial #:nodoc:
     def sign!(http, req)
       if @auth == AUTH_HMAC
         consumer = OAuth::Consumer.new(@consumer_key, @consumer_secret)
-        req.oauth!(http, consumer, @consumer_token, :scheme => 'query_string')
+        req.oauth!(http, consumer, nil, :scheme => 'query_string')
       end
     end
     
