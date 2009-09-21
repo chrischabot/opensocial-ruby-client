@@ -38,6 +38,14 @@ module OpenSocial #:nodoc:
     # Initializes the Person based on the provided json fragment. If no JSON
     # is provided, an empty object (with no attributes) is created.
     def initialize(json)
+      set_values(json)
+      if @person
+        set_values(@person)
+        @person = nil
+      end
+    end
+    
+    def set_values(json)
       if json
         json.each do |key, value|
           proper_key = key.snake_case
@@ -58,6 +66,8 @@ module OpenSocial #:nodoc:
         return @name['givenName'] + ' ' + @name['familyName']
       elsif @nickname
         return @nickname
+      elsif @display_name
+        return @display_name
       else
         return ''
       end
@@ -70,6 +80,8 @@ module OpenSocial #:nodoc:
         return @name['givenName']
       elsif @nickname
         return @nickname
+      elsif @display_name
+        return @display_name
       else
         return ''
       end
@@ -103,7 +115,13 @@ module OpenSocial #:nodoc:
     def send
       json = send_request(SERVICE, @guid, @selector)
       
-      return parse_response(json['entry'])
+      personjson = json['entry']
+      
+      if (nil == personjson)
+        personjson = json['person']
+      end
+      
+      return parse_response(personjson)
     end
     
     # Selects the appropriate fragment from the JSON response in order to

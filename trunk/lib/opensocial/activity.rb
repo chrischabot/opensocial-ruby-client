@@ -30,6 +30,14 @@ module OpenSocial #:nodoc:
     # Initializes the Activity based on the provided json fragment. If no JSON
     # is provided, an empty object (with no attributes) is created.
     def initialize(json)
+      set_values(json)
+      if @activity
+        set_values(@activity)
+        @activity = nil
+      end
+    end
+      
+    def set_values(json)
       if json
         json.each do |key, value|
           proper_key = key.snake_case
