@@ -16,7 +16,10 @@ $:.unshift(File.expand_path(File.dirname(__FILE__))) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 
-require 'opensocial/auth/action_controller_request'
+begin
+  require 'opensocial/auth/action_controller_request'
+rescue
+end
 require 'opensocial/auth/base'
 require 'opensocial/string/merb_string'
 require 'opensocial/string/os_string'

@@ -46,6 +46,17 @@ module OpenSocial #:nodoc:
                 :content_type => 'application/x-www-form-urlencoded',
                 :post_body_signing => true,
                 :use_request_body_hash => false }
+    MYSPACE_09_GET = { :endpoint => 'http://opensocial.myspace.com/roa/09',
+                       :rest => '',
+                       :rpc => '',
+                       :base_uri => 'http://opensocial.myspace.com',
+                       :request_token_path => '/request_token',
+                       :authorize_path => '/authorize',
+                       :access_token_path => '/access_token',
+                       :http_method => :get,
+                       :content_type => 'application/json',
+                       :post_body_signing => false,
+                       :use_request_body_hash => false }
     
     AUTH_HMAC = 0
     AUTH_ST = 1
