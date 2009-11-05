@@ -28,7 +28,11 @@ module OpenSocial #:nodoc:
   
   
   class Request
-    GET = '.get'
+  protected
+  
+	@@GET = '.get'
+	
+  public
     
     # Defines the connection that will be used in the request.
     attr_accessor :connection
@@ -58,7 +62,7 @@ module OpenSocial #:nodoc:
     # OpenSocial endpoint by constructing the service URI and dispatching the
     # request. When data is returned, it is parsed as JSON after being
     # optionally unescaped.
-    def send_request(service, guid, selector = nil, pid = nil,
+    def send_request(service, guid, selector = nil, pid = nil, post_data = nil,
                      unescape = false)
       if !@connection
         raise RequestException.new('Request requires a valid connection.')
@@ -66,13 +70,35 @@ module OpenSocial #:nodoc:
       
       uri = @connection.service_uri(@connection.container[:rest] + service,
                                     guid, selector, pid)
-      data = dispatch(uri)
+      data = dispatch(uri, post_data)
       
       if unescape
         JSON.parse(data.os_unescape)
       else
         JSON.parse(data)
       end
+    end
+    
+    # Get supported fields for the service endpoint
+    def get_supported_fields(service)
+      return send_request(service, '@supportedFields')
+    end
+    
+    protected
+    
+    def parse_response(className, response)
+		objectCollection = Collection.new
+		
+		if( response.nil? )
+			return objectCollection
+		end
+		
+		for entry in response
+        objectInstance = className.new(entry)
+        objectCollection[objectInstance.id] = objectInstance
+		end
+      
+      return objectCollection
     end
     
     private
@@ -154,6 +180,8 @@ module OpenSocial #:nodoc:
         end
       end
     end
+	
+  	
   end
   
   # Provides a wrapper for a single RPC request to an OpenSocial endpoint,

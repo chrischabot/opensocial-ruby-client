@@ -55,12 +55,11 @@ module OpenSocial #:nodoc:
   # a user ID and selector. This request may be used, standalone, by calling
   # send, or bundled into an RpcRequest.
   #
-  
-  
+   
   class FetchAppDataRequest < Request
     # Defines the service fragment for use in constructing the request URL or
     # JSON
-    SERVICE = 'appdata'
+    @@SERVICE = 'appdata'
     
     # Initializes a request to fetch appdata for the specified user and
     # group, or the default (@me, @self). A valid Connection is not necessary
@@ -74,7 +73,7 @@ module OpenSocial #:nodoc:
     # instance variables. Accepts an unescape parameter, defaulting to true,
     # if the returned data should be unescaped.
     def send(unescape = true)
-      json = send_request(SERVICE, @guid, @selector, @pid, unescape)
+      json = send_request(@@SERVICE, @guid, @selector, @pid, nil, unescape)
 
       return parse_response(json['entry'])
     end
@@ -89,7 +88,7 @@ module OpenSocial #:nodoc:
     # larger RpcRequest.
     def to_json(*a)
       value = {
-        'method' => SERVICE + GET,
+        'method' => @@SERVICE + @@GET,
         'params' => {
           'userId' => ["#{@guid}"],
           'groupId' => "#{@selector}",
@@ -114,4 +113,38 @@ module OpenSocial #:nodoc:
       return appdata
     end
   end
+  
+  # Provides the ability to update the AppData for a given
+  # user or set of users.
+  #
+  # Wraps a simple Post, Put or Delete request. The parameters are the same as
+  # in the Fetch case, + the post_data parameter, which contains the actual
+  # data to be updated.
+  #
+  class UpdateAppDataRequest < Request
+  
+    # Defines the service fragment for use in constructing the request URL or
+    # JSON
+    @@SERVICE = 'appdata'
+    
+    # This is only necessary because of a spec inconsistency
+    @@RPC_SERVICE = 'appdata'
+	
+	# Initializes a request to update AppData for the specified user and
+    # group, or the default (@me, @self). A valid Connection is not necessary
+    # if the request is to be used as part of an RpcRequest.
+    def initialize(connection = nil, guid = '@me', selector = '@self',
+                   pid = nil)
+      super(connection, guid, selector, pid)
+    end
+	
+	# Sends the request, passing in the appropriate SERVICE and specified
+    # instance variables.
+    def send(post_data)
+      json = send_request(@@SERVICE, @guid, @selector, @pid, post_data)
+
+      return json['statusLink']
+    end
+  end
+  
 end
