@@ -29,12 +29,64 @@ module OpenSocial #:nodoc:
               :content_type => 'application/json',
               :post_body_signing => false,
               :use_request_body_hash => true }
+			  
+	
+	ORKUT_09_GET = { :endpoint => 'http://sandbox.orkut.com/social',
+              :rest => 'rest/',
+              :rpc => 'rpc/',
+			  :base_uri => 'http://sandbox.orkut.com',
+			  :request_token_path => '',
+              :authorize_path => '',
+              :access_token_path => '',
+			  :http_method => :get,
+              :content_type => 'application/json',
+              :post_body_signing => false,
+              :use_request_body_hash => false }
+			  
+	ORKUT_09_PUT = { :endpoint => 'http://sandbox.orkut.com/social',
+              :rest => 'rest/',
+              :rpc => 'rpc/',
+			  :base_uri => 'http://sandbox.orkut.com',
+			  :request_token_path => '',
+              :authorize_path => '',
+              :access_token_path => '',
+			  :http_method => :put,
+              :content_type => 'application/json',
+              :post_body_signing => false,
+              :use_request_body_hash => false }
+			  
+	ORKUT_09_POST = { :endpoint => 'http://sandbox.orkut.com/social',
+              :rest => 'rest/',
+              :rpc => 'rpc/',
+			  :base_uri => 'http://sandbox.orkut.com',
+			  :request_token_path => '',
+              :authorize_path => '',
+              :access_token_path => '',
+			  :http_method => :post,
+              :content_type => 'application/json',
+              :post_body_signing => false,
+              :use_request_body_hash => false }
+			  
+	ORKUT_09_DELETE = { :endpoint => 'http://sandbox.orkut.com/social',
+              :rest => 'rest/',
+              :rpc => 'rpc/',
+			  :base_uri => 'http://sandbox.orkut.com',
+			  :request_token_path => '',
+              :authorize_path => '',
+              :access_token_path => '',
+			  :http_method => :delete,
+              :content_type => 'application/json',
+              :post_body_signing => false,
+              :use_request_body_hash => false }
+	
+	
     IGOOGLE = { :endpoint => 'http://www-opensocial-sandbox.googleusercontent.com/api',
                 :rest => '',
                 :rpc => 'rpc',
                 :content_type => 'application/json',
                 :post_body_signing => false,
                 :use_request_body_hash => true }
+				
     MYSPACE = { :endpoint => 'http://api.myspace.com/v2',
                 :rest => '',
                 :rpc => '',
@@ -46,6 +98,7 @@ module OpenSocial #:nodoc:
                 :content_type => 'application/x-www-form-urlencoded',
                 :post_body_signing => true,
                 :use_request_body_hash => false }
+				
     MYSPACE_09_GET = { :endpoint => 'http://opensocial.myspace.com/roa/09',
                        :rest => '',
                        :rpc => '',
@@ -54,6 +107,42 @@ module OpenSocial #:nodoc:
                        :authorize_path => '/authorize',
                        :access_token_path => '/access_token',
                        :http_method => :get,
+                       :content_type => 'application/json',
+                       :post_body_signing => false,
+                       :use_request_body_hash => false }
+					  
+	MYSPACE_09_POST = { :endpoint => 'http://opensocial.myspace.com/roa/09',
+                       :rest => '',
+                       :rpc => '',
+                       :base_uri => 'http://opensocial.myspace.com',
+                       :request_token_path => '/request_token',
+                       :authorize_path => '/authorize',
+                       :access_token_path => '/access_token',
+                       :http_method => :post,
+                       :content_type => 'application/json',
+                       :post_body_signing => false,
+                       :use_request_body_hash => false }
+					   
+	MYSPACE_09_PUT = { :endpoint => 'http://opensocial.myspace.com/roa/09',
+                       :rest => '',
+                       :rpc => '',
+                       :base_uri => 'http://opensocial.myspace.com',
+                       :request_token_path => '/request_token',
+                       :authorize_path => '/authorize',
+                       :access_token_path => '/access_token',
+                       :http_method => :put,
+                       :content_type => 'application/json',
+                       :post_body_signing => false,
+                       :use_request_body_hash => false }
+					   
+	MYSPACE_09_DELETE = { :endpoint => 'http://opensocial.myspace.com/roa/09',
+                       :rest => '',
+                       :rpc => '',
+                       :base_uri => 'http://opensocial.myspace.com',
+                       :request_token_path => '/request_token',
+                       :authorize_path => '/authorize',
+                       :access_token_path => '/access_token',
+                       :http_method => :delete,
                        :content_type => 'application/json',
                        :post_body_signing => false,
                        :use_request_body_hash => false }
@@ -101,6 +190,9 @@ module OpenSocial #:nodoc:
     # Defines whether or not to sign the body using a request body hash
     attr_accessor :use_request_body_hash
     
+    # Defines additional query parameter
+    attr_accessor :params
+ 
     # Initializes the Connection using the supplied options hash, or the
     # defaults. Verifies that the supplied authentication type has proper
     # (ie. non-blank) credentials, and that the authentication type is known.
@@ -129,11 +221,13 @@ module OpenSocial #:nodoc:
     def service_uri(service, guid, selector, pid)
       uri = [@container[:endpoint], service, guid, selector, pid].compact.
               join('/')
-      
+      if(nil == @params)
+        @params = ''
+      end
       if @auth == AUTH_HMAC && !xoauth_requestor_id.empty?
-        uri << '?xoauth_requestor_id=' + @xoauth_requestor_id
+        uri << '?xoauth_requestor_id=' + @xoauth_requestor_id + @params
       elsif @auth == AUTH_ST
-        uri << '?st=' + self.st
+        uri << '?st=' + self.st + params
       end
       URI.parse(uri)
     end

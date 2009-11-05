@@ -65,7 +65,7 @@ module OpenSocial #:nodoc:
   class FetchGroupsRequest < Request
     # Defines the service fragment for use in constructing the request URL or
     # JSON
-    SERVICE = 'groups'
+    @@SERVICE = 'groups'
     
     # Initializes a request to fetch groups for the specified user, or the
     # default (@me). A valid Connection is not necessary if the request is to
@@ -77,15 +77,43 @@ module OpenSocial #:nodoc:
     # Sends the request, passing in the appropriate SERVICE and specified
     # instance variables.
     def send
-      json = send_request(SERVICE, @guid)
-      
-      groups = Collection.new
-      for entry in json['entry']
-        group = Group.new(entry)
-        groups[group.id] = group
-      end
-      
-      return groups
+      json = send_request(@@SERVICE, @guid)
+	 
+      return parse_response(Group, json['entry'])
     end
   end
+  
+  # Provides the ability to update the group for a given
+  # user or set of users.
+  #
+  # Wraps a simple Post, Put or Delete request. The parameters are the same as
+  # in the Fetch case, + the post_data parameter, which contains the actual
+  # data to be updated.
+  #
+  class UpdateGroupsRequest < Request
+  
+    # Defines the service fragment for use in constructing the request URL or
+    # JSON
+    @@SERVICE = 'groups'
+    
+    # This is only necessary because of a spec inconsistency
+    @@RPC_SERVICE = 'groups'
+	
+	# Initializes a request to update froupfor the specified user and
+    # group, or the default (@me, @self). A valid Connection is not necessary
+    # if the request is to be used as part of an RpcRequest.
+    def initialize(connection = nil, guid = '@me', selector = '@self',
+                   pid = nil)
+      super(connection, guid, selector, pid)
+    end
+	
+	# Sends the request, passing in the appropriate SERVICE and specified
+    # instance variables.
+    def send(post_data)
+      json = send_request(@@SERVICE, @guid, @selector, @pid, post_data)
+
+      return json['statusLink']
+    end
+  end
+  
 end

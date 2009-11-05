@@ -61,15 +61,13 @@ module OpenSocial #:nodoc:
   # This request may be used, standalone, by calling send, or bundled into
   # an RpcRequest.
   #
-  
-  
   class FetchActivitiesRequest < Request
     # Defines the service fragment for use in constructing the request URL or
     # JSON
-    SERVICE = 'activities'
+    @@SERVICE = 'activities'
     
     # This is only necessary because of a spec inconsistency
-    RPC_SERVICE = 'activity'
+    @@RPC_SERVICE = 'activity'
     
     # Initializes a request to fetch activities for the specified user and
     # group, or the default (@me, @self). A valid Connection is not necessary
@@ -82,22 +80,22 @@ module OpenSocial #:nodoc:
     # Sends the request, passing in the appropriate SERVICE and specified
     # instance variables.
     def send
-      json = send_request(SERVICE, @guid, @selector, @pid)
+      json = send_request(@@SERVICE, @guid, @selector, @pid)
 
-      return parse_response(json['entry'])
+      return parse_response(Activity, json['entry'])
     end
     
     # Selects the appropriate fragment from the JSON response in order to
     # create a native object.
     def parse_rpc_response(response)
-      return parse_response(response['data']['list'])
+      return parse_response(Activity, response['data']['list'])
     end
     
     # Converts the request into a JSON fragment that can be used as part of a
     # larger RpcRequest.
     def to_json(*a)
       value = {
-        'method' => RPC_SERVICE + GET,
+        'method' => @@RPC_SERVICE + @@GET,
         'params' => {
           'userId' => ["#{@guid}"],
           'groupId' => "#{@selector}",
@@ -107,18 +105,39 @@ module OpenSocial #:nodoc:
       }.to_json(*a)
     end
     
-    private
+  end
+  
+  # Provides the ability to update the activity for a given
+  # user or set of users.
+  #
+  # Wraps a simple Post, Put or Delete request. The parameters are the same as
+  # in the Fetch case, + the post_data parameter, which contains the actual
+  # data to be updated.
+  #
+  class UpdateActivitiesRequest < Request
+  
+    # Defines the service fragment for use in constructing the request URL or
+    # JSON
+    @@SERVICE = 'activities'
     
-    # Converts the JSON response into a Collection of activities, indexed by
-    # id.
-    def parse_response(response)
-      activities = Collection.new
-      for entry in response
-        activity = Activity.new(entry)
-        activities[activity.id] = activity
-      end
-      
-      return activities
+    # This is only necessary because of a spec inconsistency
+    @@RPC_SERVICE = 'activities'
+	
+	# Initializes a request to update activities for the specified user and
+    # group, or the default (@me, @self). A valid Connection is not necessary
+    # if the request is to be used as part of an RpcRequest.
+    def initialize(connection = nil, guid = '@me', selector = '@self',
+                   pid = nil)
+      super(connection, guid, selector, pid)
+    end
+	
+	# Sends the request, passing in the appropriate SERVICE and specified
+    # instance variables.
+    def send(post_data)
+      json = send_request(@@SERVICE, @guid, @selector, @pid, post_data)
+
+      return json['statusLink']
     end
   end
+  
 end

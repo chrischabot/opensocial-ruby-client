@@ -101,7 +101,7 @@ module OpenSocial #:nodoc:
   class FetchPersonRequest < Request
     # Defines the service fragment for use in constructing the request URL or
     # JSON
-    SERVICE = 'people'
+    @@SERVICE = 'people'
     
     # Initializes a request to the specified user, or the default (@me, @self).
     # A valid Connection is not necessary if the request is to be used as part
@@ -113,7 +113,7 @@ module OpenSocial #:nodoc:
     # Sends the request, passing in the appropriate SERVICE and specified
     # instance variables.
     def send
-      json = send_request(SERVICE, @guid, @selector)
+      json = send_request(@@SERVICE, @guid, @selector)
       
       personjson = json['entry']
       
@@ -134,7 +134,7 @@ module OpenSocial #:nodoc:
     # larger RpcRequest.
     def to_json(*a)
       value = {
-        'method' => SERVICE + GET,
+        'method' => @@SERVICE + @@GET,
         'params' => {
           'userId' => ["#{@guid}"],
           'groupId' => "#{@selector}"
@@ -164,7 +164,7 @@ module OpenSocial #:nodoc:
   class FetchPeopleRequest < Request
     # Defines the service fragment for use in constructing the request URL or
     # JSON
-    SERVICE = 'people'
+    @@SERVICE = 'people'
     
     # Initializes a request to the specified user's group, or the default (@me,
     # @friends). A valid Connection is not necessary if the request is to be
@@ -176,22 +176,22 @@ module OpenSocial #:nodoc:
     # Sends the request, passing in the appropriate SERVICE and specified
     # instance variables.
     def send
-      json = send_request(SERVICE, @guid, @selector)
+      json = send_request(@@SERVICE, @guid, @selector)
       
-      return parse_response(json['entry'])
+      return parse_response(Person, json['entry'])
     end
     
     # Selects the appropriate fragment from the JSON response in order to
     # create a native object.
     def parse_rpc_response(response)
-      return parse_response(response['data']['list'])
+      return parse_response(Person, response['data']['list'])
     end
     
     # Converts the request into a JSON fragment that can be used as part of a
     # larger RPC request.
     def to_json(*a)
       value = {
-        'method' => SERVICE + GET,
+        'method' => @@SERVICE + @@GET,
         'params' => {
           'userId' => ["#{@guid}"],
           'groupId' => "#{@selector}"
@@ -200,17 +200,40 @@ module OpenSocial #:nodoc:
       }.to_json(*a)
     end
     
-    private
-    
-    # Converts the JSON response into a Collection of people, indexed by id.
-    def parse_response(response)
-      people = Collection.new
-      for entry in response
-        person = Person.new(entry)
-        people[person.id] = person
-      end
-      
-      return people
-    end
   end
+  
+  # Provides the ability to update the  person data for a given
+  # user or set of users
+  #
+  # Wraps a simple Post, Put or Delete request. The parameters are the same as
+  # in the Fetch case, + the post_data parameter, which contains the actual
+  # data to be updated.
+  #
+  class UpdatePersonRequest < Request
+  
+    # Defines the service fragment for use in constructing the request URL or
+    # JSON
+    @@SERVICE = 'people'
+    
+    # This is only necessary because of a spec inconsistency
+    @@RPC_SERVICE = 'people'
+	
+	# Initializes a request to update persons data for the specified user.
+    #  or the default (@me, @self). A valid Connection is not necessary
+    # if the request is to be used as part of an RpcRequest.
+    def initialize(connection = nil, guid = '@me', selector = '@self',
+                   pid = nil)
+      super(connection, guid, selector, pid)
+    end
+	
+	# Sends the request, passing in the appropriate SERVICE and specified
+    # instance variables.
+    def send(post_data)
+      json = send_request(@@SERVICE, @guid, @selector, @pid, post_data)
+
+      return json['statusLink']
+    end
+	
+  end
+  
 end
