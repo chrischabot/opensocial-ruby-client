@@ -109,7 +109,12 @@ module OpenSocial #:nodoc:
         'id' => @key
       }.to_json(*a)
     end    
-	
+
+    # Get supported fields for the service
+    def get_supported_fields(service)
+      return send_request(service, @guid, '@supportedMood')
+    end
+
   end
   
   
